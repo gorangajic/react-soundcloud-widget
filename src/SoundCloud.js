@@ -55,6 +55,9 @@ class SoundCloud extends React.Component {
 
   _createWidget() {
     createWidget(this.props.id, (widget) => {
+      if (this.removed) {
+        return;
+      }
       this._setupWidget(widget);
       this._reloadWidget();
     });
@@ -100,6 +103,10 @@ class SoundCloud extends React.Component {
    */
 
   _unbindEvents() {
+    this.removed = true;
+    if (!this._internalWidget) {
+      return;
+    }
     this._internalWidget.unbind(window.SC.Widget.Events.PLAY);
     this._internalWidget.unbind(window.SC.Widget.Events.PAUSE);
     this._internalWidget.unbind(window.SC.Widget.Events.FINISH);
